@@ -1,6 +1,6 @@
 # SALES INTEGRATION - M2 #
 
-Magento 2 module: Movie Catalog Challenge
+Magento 2 module: Send to the API of an external system (ERP), the data of the orders that enter the virtual store
 
 ### Instalation ###
 
