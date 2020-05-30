@@ -27,6 +27,7 @@ use Aislan\SalesIntegration\Api\Data\CustomerApiInterface;
 use Aislan\SalesIntegration\Api\Data\CustomerApiInterfaceFactory;
 use Aislan\SalesIntegration\Api\OrderApiInterface;
 use Aislan\SalesIntegration\Api\OrderApiInterfaceFactory;
+use Aislan\SalesIntegration\Helper\Config;
 use Aislan\SalesIntegration\Model\CustomerApi;
 use DateTime;
 use Magento\Customer\Api\CustomerRepositoryInterface;
@@ -34,6 +35,7 @@ use Magento\Customer\Model\Data\Customer;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\Webapi\ServiceOutputProcessor;
 use Magento\Sales\Api\Data\OrderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,6 +70,10 @@ class SalesIntegration extends Command
      * @var \Aislan\SalesIntegration\Api\Data\ShippingAddressApiInterface
      */
     private $shippingAddressApi;
+    /**
+     * @var ServiceOutputProcessor
+     */
+    private $_serviceOutputProcessor;
 
     /**
      * GenerateIndex constructor.
@@ -81,7 +87,8 @@ class SalesIntegration extends Command
         OrderApiInterface $orderApi,
         CustomerRepositoryInterface $customerRepository,
         TimezoneInterface $timezone,
-        \Aislan\SalesIntegration\Api\Data\ShippingAddressApiInterface $shippingAddressApi
+        \Aislan\SalesIntegration\Api\Data\ShippingAddressApiInterface $shippingAddressApi,
+        ServiceOutputProcessor $_serviceOutputProcessor
     ) {
         parent::__construct($name);
         $this->_order = $_order;
@@ -90,6 +97,7 @@ class SalesIntegration extends Command
         $this->customerRepository = $customerRepository;
         $this->timezone = $timezone;
         $this->shippingAddressApi = $shippingAddressApi;
+        $this->_serviceOutputProcessor = $_serviceOutputProcessor;
     }
 
     /**
@@ -109,6 +117,7 @@ class SalesIntegration extends Command
     {
         $incrementId = 000000002;
         $order = $this->_order->loadByIncrementId($incrementId);
-        $orderApi = json_encode($this->orderApi->getOrderApiByOrder($order));
+        $orderApi = $this->_serviceOutputProcessor->convertValue($this->orderApi->getOrderApiByOrder($order),Config::AISLAN_SALESINTEGRATION_API_DATA_ORDERAPIINTERFACE);
+        $orderApi = json_encode($orderApi);
     }
 }

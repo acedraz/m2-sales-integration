@@ -34,35 +34,35 @@ use Magento\Sales\Api\Data\OrderInterface;
 interface OrderApiInterface
 {
     /**
-     * @param CustomerApiInterface $customerApi
+     * @param \Aislan\SalesIntegration\Api\Data\ustomerApiInterface $customerApi
      * @return mixed
      */
     public function setCustomer(CustomerApiInterface $customerApi);
 
     /**
-     * @return CustomerApiInterface
+     * @return \Aislan\SalesIntegration\Api\Data\CustomerApiInterface
      */
     public function getCustomer() : CustomerApiInterface;
 
     /**
-     * @param ShippingAddressApiInterface $shippingAddress
+     * @param \Aislan\SalesIntegration\Api\Data\ShippingAddressApiInterface $shippingAddress
      * @return mixed
      */
     public function setShippingAddress(ShippingAddressApiInterface $shippingAddress);
 
     /**
-     * @return ShippingAddressApiInterface
+     * @return \Aislan\SalesIntegration\Api\Data\ShippingAddressApiInterface
      */
     public function getShippingAddress() : ShippingAddressApiInterface;
 
     /**
-     * @param $items
-     * @return mixed
+     * @param array $items
+     * @return array[]
      */
     public function setItems($items);
 
     /**
-     * @return mixed
+     * @return \Aislan\SalesIntegration\Api\Data\ItemApiInterface[]
      */
     public function getItems();
 
@@ -144,8 +144,8 @@ interface OrderApiInterface
     public function getTotal();
 
     /**
-     * @param OrderInterface $order
-     * @return mixed
+     * @param \Magento\Sales\Api\Data\OrderInterface $order
+     * @return \Aislan\SalesIntegration\Model\OrderApi
      */
     public function getOrderApiByOrder(OrderInterface $order);
 }

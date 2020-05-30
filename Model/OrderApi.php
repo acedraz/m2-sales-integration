@@ -96,7 +96,7 @@ class OrderApi extends AbstractModel implements OrderApiInterface
     }
 
     /**
-     * @param CustomerApiInterface $customerApi
+     * @param \Aislan\SalesIntegration\Api\Data\CustomerApiInterface $customerApi
      * @return mixed|void
      */
     public function setCustomer(CustomerApiInterface $customerApi)
@@ -105,7 +105,7 @@ class OrderApi extends AbstractModel implements OrderApiInterface
     }
 
     /**
-     * @return CustomerApiInterface
+     * @return \Aislan\SalesIntegration\Api\Data\CustomerApiInterface
      */
     public function getCustomer() : CustomerApiInterface
     {
