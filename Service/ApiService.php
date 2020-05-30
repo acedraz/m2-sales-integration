@@ -126,13 +126,11 @@ class ApiService implements ApiServiceInterface
         array $params = [],
         string $requestMethod = Request::HTTP_METHOD_POST
     ): Response {
-        $client = $this->_clientFactory->create(['config' => [
-            'base_uri' => $this->apiRequestUri
-        ]]);
         try {
+            $client = $this->_clientFactory->create();
             $response = $client->request(
                 $requestMethod,
-                $uriEndpoint,
+                $this->apiRequestUri.$uriEndpoint,
                 $params
             );
         } catch (GuzzleException $exception) {
@@ -145,14 +143,16 @@ class ApiService implements ApiServiceInterface
     }
 
     /**
-     * Fetch some data from API
+     * Send data for API
      */
     public function execute()
     {
         $params = [
             RequestOptions::HEADERS => [
                 Config::AUTHORIZATION => Config::BEARER . ' '. $this->apiRequestKey,
-                Config::ACCEPT => Config::APPLICATION_JSON],
+                Config::ACCEPT => Config::APPLICATION_JSON,
+                Config::CONTENT_TYPE => Config::APPLICATION_JSON
+            ],
             RequestOptions::BODY => $this->data
         ];
         $attempts = 0;

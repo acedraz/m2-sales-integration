@@ -31,9 +31,10 @@ class Config
     const AUTHORIZATION = 'Authorization';
     const BEARER = 'Bearer';
     const ACCEPT = 'Accept';
+    const CONTENT_TYPE = 'Content-Type';
     const APPLICATION_JSON = 'application/json';
     const ERROR_API_REQUEST = 'Error in API request: ';
-    const SYSTEM_SALESINTEGRATION_GENERAL = 'movies_integration/general/';
+    const SYSTEM_SALESINTEGRATION_GENERAL = 'sales_integration/general/';
     const SYSTEM_SALESINTEGRATION_ENABLE = self::SYSTEM_SALESINTEGRATION_GENERAL.'enable';
     const SYSTEM_SALESINTEGRATION_API_URL = self::SYSTEM_SALESINTEGRATION_GENERAL.'api_url';
     const SYSTEM_SALESINTEGRATION_API_KEY = self::SYSTEM_SALESINTEGRATION_GENERAL.'api_key';

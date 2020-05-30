@@ -31,6 +31,8 @@
                 type="Aislan\SalesIntegration\Model\ItemApi"/>
     <preference for="Aislan\SalesIntegration\Api\OrderApiInterface"
                 type="Aislan\SalesIntegration\Model\OrderApi"/>
+    <preference for="Aislan\SalesIntegration\Api\PostOrderApiInterface"
+                type="Aislan\SalesIntegration\Model\PostOrderApi"/>
 
     <type name="Aislan\SalesIntegration\Console\Command\SalesIntegration">
         <arguments>
