@@ -29,6 +29,20 @@ Run this command in magento cli terminal (if necessary)
 
     php bin/magento module:enable Aislan_SalesIntegration
     php bin/magento setup:upgrade
+
+### CONFIGURATIONS ###
+
+This module requires some configurations:
+    
+* Enable: disable or enable module functionality
+* API Url: ERP URI address
+* API Key: token Bearer for API authentication
+* ERP Endpoint: an ERP endpoint to post an order
+* Reconnection Attempts: amount of reconnection if there is no favorable response from the API.
+
+For configuration in magento admin painel:
+
+    STORES -> CONFIGURATION -> AISLAN -> SALES INTEGRATION
     
 ### HOW TO TESTE ###
      
