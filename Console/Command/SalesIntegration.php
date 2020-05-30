@@ -25,6 +25,7 @@ namespace Aislan\SalesIntegration\Console\Command;
 
 use Aislan\SalesIntegration\Helper\Config;
 use Aislan\SalesIntegration\Api\Service\ApiServiceInterfaceFactory;
+use Aislan\SalesIntegration\Helper\System;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
 use Symfony\Component\Console\Command\Command;
@@ -59,6 +60,10 @@ class SalesIntegration extends Command
      * @var OrderApiInterface
      */
     private $orderApi;
+    /**
+     * @var System
+     */
+    private $system;
 
     /**
      * GenerateIndex constructor.
@@ -73,13 +78,15 @@ class SalesIntegration extends Command
         OrderInterface $_order,
         ApiServiceInterfaceFactory $apiServiceFactory,
         ServiceOutputProcessor $_serviceOutputProcessor,
-        OrderApiInterface $orderApi
+        OrderApiInterface $orderApi,
+        System $system
     ) {
         parent::__construct($name);
         $this->_order = $_order;
         $this->apiServiceFactory = $apiServiceFactory;
         $this->_serviceOutputProcessor = $_serviceOutputProcessor;
         $this->orderApi = $orderApi;
+        $this->system = $system;
     }
 
     /**
@@ -98,12 +105,17 @@ class SalesIntegration extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->system->isEnabled()) {
+            $message = __('Disabled module. Please enable module in admin store settings painel.');
+            $output->writeln('<error>' . $message . '<error>');
+            return;
+        }
         $message = __('Executing');
         $output->writeln('<info>' . $message . '<info>');
         try {
             $order = $this->_order->loadByIncrementId($input->getArgument(self::ORDER_INCREMENT_ID));
         } catch (\Exception $e) {
-            $message = __('Error in get order: '.$e);
+            $message = __('Error in get order: %1',$e);
             $output->writeln('<error>' . $message . '<error>');
             return;
         }
@@ -111,7 +123,7 @@ class SalesIntegration extends Command
             $orderApi = $this->_serviceOutputProcessor->convertValue($this->orderApi->getOrderApiByOrder($order),Config::AISLAN_SALESINTEGRATION_API_DATA_ORDERAPIINTERFACE);
             $orderApi = json_encode($orderApi);
         } catch (\Exception $e) {
-            $message = __('Error in convert order: '.$e);
+            $message = __('Error in convert order: %1',$e);
             $output->writeln('<error>' . $message . '<error>');
             return;
         }
@@ -120,7 +132,7 @@ class SalesIntegration extends Command
             $apiService->setData($orderApi);
             $apiService->execute();
         } catch (\Exception $e) {
-            $message = __('Error in send order: '.$e);
+            $message = __('Error in send order: %1',$e);
             $output->writeln('<error>' . $message . '<error>');
             return;
         }

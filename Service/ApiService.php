@@ -31,6 +31,7 @@ use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Webapi\Rest\Request;
 use Psr\Log\LoggerInterface;
 
@@ -85,6 +86,10 @@ class ApiService implements ApiServiceInterface
      * @var Json
      */
     private $data;
+    /**
+     * @var ManagerInterface
+     */
+    private $_eventManager;
 
     /**
      * TMDApiService constructor.
@@ -92,12 +97,14 @@ class ApiService implements ApiServiceInterface
      * @param ResponseFactory $responseFactory
      * @param System $system
      * @param LoggerInterface $_logger
+     * @param ManagerInterface $_eventManager
      */
     public function __construct(
         ClientFactory $clientFactory,
         ResponseFactory $responseFactory,
         System $system,
-        LoggerInterface $_logger
+        LoggerInterface $_logger,
+        ManagerInterface $_eventManager
     ) {
         $this->_clientFactory = $clientFactory;
         $this->_responseFactory = $responseFactory;
@@ -110,6 +117,7 @@ class ApiService implements ApiServiceInterface
             $this->apiRequestEndpoint = $this->system->getErpEndpoint();
         }
         $this->_logger = $_logger;
+        $this->_eventManager = $_eventManager;
     }
 
     /**
@@ -156,6 +164,17 @@ class ApiService implements ApiServiceInterface
             RequestOptions::BODY => $this->data
         ];
         $attempts = 0;
+        $this->_eventManager->dispatch(
+            'request_api_erp_send_before',
+            [
+                'endpoint' => $this->apiRequestEndpoint,
+                'params' => $params,
+                'api_key' => $this->apiRequestKey,
+                'attempts' => $attempts,
+                'uri' => $this->apiRequestUri,
+                'data' => $this->data
+            ]
+        );
         do {
             $response = $this->doRequest($this->apiRequestEndpoint,$params);
             $status = $response->getStatusCode();
@@ -166,6 +185,14 @@ class ApiService implements ApiServiceInterface
             $this->_logger->critical(Config::ERROR_API_REQUEST . $status . ' - ' . $response->getReasonPhrase());
             return false;
         }
+        $this->_eventManager->dispatch(
+            'request_api_erp_send_after',
+            [
+                'status' => $status,
+                'response' => $response,
+                'content' => $response->getBody()->getContents()
+            ]
+        );
         return $response->getBody()->getContents();
     }
 
