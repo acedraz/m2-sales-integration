@@ -23,4 +23,25 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Aislan\SalesIntegration\Api\Service\ApiServiceInterface"
                 type="Aislan\SalesIntegration\Service\ApiService"/>
+    <preference for="Aislan\SalesIntegration\Api\Data\CustomerApiInterface"
+                type="Aislan\SalesIntegration\Model\CustomerApi"/>
+    <preference for="Aislan\SalesIntegration\Api\Data\ShippingAddressApiInterface"
+                type="Aislan\SalesIntegration\Model\ShippingAddressApi"/>
+    <preference for="Aislan\SalesIntegration\Api\Data\ItemApiInterface"
+                type="Aislan\SalesIntegration\Model\ItemApi"/>
+    <preference for="Aislan\SalesIntegration\Api\OrderApiInterface"
+                type="Aislan\SalesIntegration\Model\OrderApi"/>
+
+    <type name="Aislan\SalesIntegration\Console\Command\SalesIntegration">
+        <arguments>
+            <argument name="name" xsi:type="string">sales:integration</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="catalog_movie_update" xsi:type="object">Aislan\SalesIntegration\Console\Command\SalesIntegration</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
