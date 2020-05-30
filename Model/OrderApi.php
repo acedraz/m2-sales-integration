@@ -34,6 +34,7 @@ use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Magento\Sales\Api\Data\OrderInterface;
+use \Magento\Sales\Api\Data\OrderAddressInterfaceFactory;
 
 /**
  * Class OrderApi
@@ -70,7 +71,24 @@ class OrderApi extends AbstractModel implements OrderApiInterface
      * @var ShippingAddressApiInterface
      */
     private $shippingAddressApi;
+    /**
+     * @var OrderAddressInterfaceFactory
+     */
+    private $_orderAddressFactory;
 
+    /**
+     * OrderApi constructor.
+     * @param Context $context
+     * @param Registry $registry
+     * @param AbstractResource|null $resource
+     * @param AbstractDb|null $resourceCollection
+     * @param array $data
+     * @param ItemApiInterfaceFactory $itemApiFactory
+     * @param CustomerRepositoryInterface $_customerRepository
+     * @param CustomerApiInterface $customerApi
+     * @param ShippingAddressApiInterface $shippingAddressApi
+     * @param OrderAddressInterfaceFactory $_orderAddressFactory
+     */
     public function __construct(
         Context $context,
         Registry $registry,
@@ -80,7 +98,8 @@ class OrderApi extends AbstractModel implements OrderApiInterface
         ItemApiInterfaceFactory $itemApiFactory,
         CustomerRepositoryInterface $_customerRepository,
         CustomerApiInterface $customerApi,
-        ShippingAddressApiInterface $shippingAddressApi
+        ShippingAddressApiInterface $shippingAddressApi,
+        OrderAddressInterfaceFactory $_orderAddressFactory
     ) {
         parent::__construct(
             $context,
@@ -93,6 +112,7 @@ class OrderApi extends AbstractModel implements OrderApiInterface
         $this->_customerRepository = $_customerRepository;
         $this->customerApi = $customerApi;
         $this->shippingAddressApi = $shippingAddressApi;
+        $this->_orderAddressFactory = $_orderAddressFactory;
     }
 
     /**
@@ -279,7 +299,11 @@ class OrderApi extends AbstractModel implements OrderApiInterface
     {
         $customer = $this->_customerRepository->getById($order->getCustomerId());
         $this->setCustomer($this->customerApi->getCustomerApiByCustomer($customer));
-        $this->setShippingAddress($this->shippingAddressApi->getShippingAddressApiByAddress($order->getShippingAddress()));
+        $orderAddress = $order->getShippingAddress();
+        if (is_null($orderAddress)) {
+            $orderAddress = $this->_orderAddressFactory->create();
+        }
+        $this->setShippingAddress($this->shippingAddressApi->getShippingAddressApiByAddress($orderAddress));
         $this->setItems($order->getAllVisibleItems());
         $this->setShippingMethod($order->getShippingDescription());
         $this->setPaymentMethod($order->getPayment()->getMethod());

@@ -30,6 +30,7 @@ use Aislan\SalesIntegration\Helper\System;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class SendOrderApiObserver
@@ -112,5 +113,6 @@ class SendOrderApiObserver implements ObserverInterface
         }
         $message = __('Order: %1 sended to ERP',$order->getIncrementId());
         $this->_logger->info($message);
+        return $this;
     }
 }

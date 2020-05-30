@@ -229,7 +229,7 @@ class CustomerApi extends AbstractModel implements CustomerApiInterface
         $this->setRazaoSocial(method_exists($customer->getExtensionAttributes(),'getRazaoSocial') ? $customer->getExtensionAttributes()->getRazaoSocial() : '');
         $this->setNomeFantasia(method_exists($customer->getExtensionAttributes(),'getNomeFantasia') ? $customer->getExtensionAttributes()->getNomeFantasia() : '');
         $this->setIe(method_exists($customer->getExtensionAttributes(),'getIe') ? $customer->getExtensionAttributes()->getIe() : '00000000');
-        $this->setDob($this->timezone->date(new \DateTime($customer->getDob()))->format('d/m/Y'));
+        $this->setDob(is_null($customer->getDob()) ? '00/00/0000' : $this->timezone->date(new \DateTime($customer->getDob()))->format('d/m/Y'));
         return $this;
     }
 }
