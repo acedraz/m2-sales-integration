@@ -105,7 +105,7 @@ class SendOrderApiObserver implements ObserverInterface
         try {
             $apiService = $this->apiServiceFactory->create();
             $apiService->setData($orderApi);
-            if (!$apiService->execute()) {
+            if ($apiService->execute() === false) {
                 return $this;
             }
         } catch (\Exception $e) {

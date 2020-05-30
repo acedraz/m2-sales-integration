@@ -130,7 +130,7 @@ class SalesIntegration extends Command
         try {
             $apiService = $this->apiServiceFactory->create();
             $apiService->setData($orderApi);
-            if (!$apiService->execute()) {
+            if ($apiService->execute()  === false) {
                 $message = __('Error in send order');
                 $output->writeln('<error>' . $message . '<error>');
                 return;
@@ -140,7 +140,7 @@ class SalesIntegration extends Command
             $output->writeln('<error>' . $message . '<error>');
             return;
         }
-        $message = __('Finished');
+        $message = __('Success');
         $output->writeln('<info>' . $message . '<info>');
     }
 }
