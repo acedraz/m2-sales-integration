@@ -48,7 +48,6 @@ class PostOrderApi implements PostOrderApiInterface
     }
 
     /**
-     * @param $customer
      * @return mixed
      */
     public function getOrderApi()

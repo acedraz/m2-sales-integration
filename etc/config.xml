@@ -28,7 +28,6 @@
                 <api_url></api_url>
                 <endpoint>/webhook/sales</endpoint>
                 <attempts>10</attempts>
-                <cron>0 0 0 * * ?</cron>
             </general>
         </sales_integration>
     </default>
