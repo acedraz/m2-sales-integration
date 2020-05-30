@@ -39,4 +39,10 @@ interface ApiServiceInterface
      * @return mixed
      */
     public function setRequestEndpoint($endpoint);
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function setData($data);
 }

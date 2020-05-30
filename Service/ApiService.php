@@ -82,6 +82,11 @@ class ApiService implements ApiServiceInterface
     private $_logger;
 
     /**
+     * @var Json
+     */
+    private $data;
+
+    /**
      * TMDApiService constructor.
      * @param ClientFactory $clientFactory
      * @param ResponseFactory $responseFactory
@@ -144,9 +149,11 @@ class ApiService implements ApiServiceInterface
      */
     public function execute()
     {
-        $params = [RequestOptions::HEADERS => [
-            Config::AUTHORIZATION => Config::BEARER . ' '. $this->apiRequestKey,
-            Config::ACCEPT => Config::APPLICATION_JSON]
+        $params = [
+            RequestOptions::HEADERS => [
+                Config::AUTHORIZATION => Config::BEARER . ' '. $this->apiRequestKey,
+                Config::ACCEPT => Config::APPLICATION_JSON],
+            RequestOptions::BODY => $this->data
         ];
         $attempts = 0;
         do {
@@ -168,5 +175,13 @@ class ApiService implements ApiServiceInterface
     public function setRequestEndpoint($endpoint)
     {
         $this->apiRequestEndpoint = $endpoint;
+    }
+
+    /**
+     * @param $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 }
