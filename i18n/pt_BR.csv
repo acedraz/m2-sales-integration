@@ -11,6 +11,7 @@
 "Finished","Terminado"
 "Error in convert order: %1","Erro na conversão do pedido: %1"
 "Error in send order: %1","Erro no envio do pedido: %1"
+"Error in send order","Erro no envio do pedido"
 "Executing","Em execução"
 "Order: %1 sended to ERP","Pedido: %1 enviado para o REP"
 "Disabled module. Please enable module in admin store settings painel.","Módulo desabilitado. Favor habilitar nas configurações da loja no painel administrativo"

@@ -130,7 +130,11 @@ class SalesIntegration extends Command
         try {
             $apiService = $this->apiServiceFactory->create();
             $apiService->setData($orderApi);
-            $apiService->execute();
+            if (!$apiService->execute()) {
+                $message = __('Error in send order');
+                $output->writeln('<error>' . $message . '<error>');
+                return;
+            }
         } catch (\Exception $e) {
             $message = __('Error in send order: %1',$e);
             $output->writeln('<error>' . $message . '<error>');
