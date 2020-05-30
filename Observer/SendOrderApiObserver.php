@@ -91,7 +91,7 @@ class SendOrderApiObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         if (!$this->system->isEnabled()) {
-            return;
+            return $this;
         }
         $order = $observer->getEvent()->getOrder();
         try {
