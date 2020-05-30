@@ -100,18 +100,18 @@ class SendOrderApiObserver implements ObserverInterface
         } catch (\Exception $e) {
             $message = __('Error in convert order: %1',$e);
             $this->_logger->critical($message);
-            return;
+            return $this;
         }
         try {
             $apiService = $this->apiServiceFactory->create();
             $apiService->setData($orderApi);
             if (!$apiService->execute()) {
-                return;
+                return $this;
             }
         } catch (\Exception $e) {
             $message = __('Error in send order: %1',$e);
             $this->_logger->critical($message);
-            return;
+            return $this;
         }
         $message = __('Order: %1 sended to ERP',$order->getIncrementId());
         $this->_logger->info($message);
