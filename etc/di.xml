@@ -33,6 +33,23 @@
                 type="Aislan\SalesIntegration\Model\OrderApi"/>
     <preference for="Aislan\SalesIntegration\Api\PostOrderApiInterface"
                 type="Aislan\SalesIntegration\Model\PostOrderApi"/>
+    <preference for="Aislan\SalesIntegration\Api\SystemInterface"
+                type="Aislan\SalesIntegration\Model\System"/>
+    <preference for="Aislan\SalesIntegration\Api\LoggerInterface"
+                type="Aislan\SalesIntegration\Logger\Logger"/>
+    <type name="Aislan\SalesIntegration\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Aislan\SalesIntegration\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">salesIntegration</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Aislan\SalesIntegration\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Aislan\SalesIntegration\Console\Command\SalesIntegration">
         <arguments>
             <argument name="name" xsi:type="string">sales:integration</argument>

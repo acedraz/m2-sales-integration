@@ -24,8 +24,8 @@ declare(strict_types=1);
 namespace Aislan\SalesIntegration\Service;
 
 use Aislan\SalesIntegration\Api\Service\ApiServiceInterface;
-use Aislan\SalesIntegration\Helper\Config;
-use Aislan\SalesIntegration\Helper\System;
+use Aislan\SalesIntegration\Api\SystemInterface;
+use Aislan\SalesIntegration\Model\Config;
 use GuzzleHttp\ClientFactory;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Exception\GuzzleException;
@@ -33,7 +33,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Webapi\Rest\Request;
-use Psr\Log\LoggerInterface;
+use Aislan\SalesIntegration\Api\LoggerInterface;
 
 /**
  * Class ApiService
@@ -102,7 +102,7 @@ class ApiService implements ApiServiceInterface
     public function __construct(
         ClientFactory $clientFactory,
         ResponseFactory $responseFactory,
-        System $system,
+        SystemInterface $system,
         LoggerInterface $_logger,
         ManagerInterface $_eventManager
     ) {

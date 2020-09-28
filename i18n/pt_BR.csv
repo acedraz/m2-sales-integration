@@ -15,3 +15,5 @@
 "Executing","Em execução"
 "Order: %1 sended to ERP","Pedido: %1 enviado para o REP"
 "Disabled module. Please enable module in admin store settings painel.","Módulo desabilitado. Favor habilitar nas configurações da loja no painel administrativo"
+"Logger file","Arquivo de log"
+"Name of the file to be stored logs.","Nome do arquivo a ser armazenado os logs."

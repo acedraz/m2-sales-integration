@@ -60,6 +60,13 @@
                         <field id="sales_integration/general/enable">1</field>
                     </depends>
                 </field>
+                <field id="log_file" type="text" showInDefault="1" sortOrder="30" translate="label" showInWebsite="1" showInStore="1">
+                    <label>Logger file</label>
+                    <comment>Name of the file to be stored logs.</comment>
+                    <depends>
+                        <field id="sales_integration/general/enable">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

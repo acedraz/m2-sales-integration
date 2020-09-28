@@ -28,6 +28,7 @@
                 <api_url></api_url>
                 <endpoint>/webhook/sales</endpoint>
                 <attempts>10</attempts>
+                <log_file>sales_integration.log</log_file>
             </general>
         </sales_integration>
     </default>

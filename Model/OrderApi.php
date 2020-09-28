@@ -67,10 +67,12 @@ class OrderApi extends AbstractModel implements OrderApiInterface
      * @var CustomerApiInterface
      */
     private $customerApi;
+
     /**
      * @var ShippingAddressApiInterface
      */
     private $shippingAddressApi;
+
     /**
      * @var OrderAddressInterfaceFactory
      */

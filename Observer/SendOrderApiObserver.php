@@ -25,12 +25,12 @@ namespace Aislan\SalesIntegration\Observer;
 
 use Aislan\SalesIntegration\Api\OrderApiInterface;
 use Aislan\SalesIntegration\Api\Service\ApiServiceInterfaceFactory;
-use Aislan\SalesIntegration\Helper\Config;
-use Aislan\SalesIntegration\Helper\System;
+use Aislan\SalesIntegration\Api\SystemInterface;
+use Aislan\SalesIntegration\Model\Config;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
-use Psr\Log\LoggerInterface;
+use Aislan\SalesIntegration\Api\LoggerInterface;
 
 /**
  * Class SendOrderApiObserver
@@ -73,7 +73,7 @@ class SendOrderApiObserver implements ObserverInterface
     public function __construct(
         ApiServiceInterfaceFactory $apiServiceFactory,
         OrderApiInterface $orderApi,
-        System $system,
+        SystemInterface $system,
         LoggerInterface $_logger,
         ServiceOutputProcessor $_serviceOutputProcessor
     ) {

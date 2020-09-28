@@ -23,9 +23,10 @@ declare(strict_types=1);
 
 namespace Aislan\SalesIntegration\Console\Command;
 
-use Aislan\SalesIntegration\Helper\Config;
+use Aislan\SalesIntegration\Api\LoggerInterface;
+use Aislan\SalesIntegration\Api\SystemInterface;
+use Aislan\SalesIntegration\Model\Config;
 use Aislan\SalesIntegration\Api\Service\ApiServiceInterfaceFactory;
-use Aislan\SalesIntegration\Helper\System;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Framework\Webapi\ServiceOutputProcessor;
 use Symfony\Component\Console\Command\Command;
@@ -64,6 +65,10 @@ class SalesIntegration extends Command
      * @var System
      */
     private $system;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * GenerateIndex constructor.
@@ -72,6 +77,8 @@ class SalesIntegration extends Command
      * @param ApiServiceInterfaceFactory $apiServiceFactory
      * @param ServiceOutputProcessor $_serviceOutputProcessor
      * @param OrderApiInterface $orderApi
+     * @param SystemInterface $system
+     * @param LoggerInterface $logger
      */
     public function __construct(
         string $name = null,
@@ -79,7 +86,8 @@ class SalesIntegration extends Command
         ApiServiceInterfaceFactory $apiServiceFactory,
         ServiceOutputProcessor $_serviceOutputProcessor,
         OrderApiInterface $orderApi,
-        System $system
+        SystemInterface $system,
+        LoggerInterface $logger
     ) {
         parent::__construct($name);
         $this->_order = $_order;
@@ -87,6 +95,7 @@ class SalesIntegration extends Command
         $this->_serviceOutputProcessor = $_serviceOutputProcessor;
         $this->orderApi = $orderApi;
         $this->system = $system;
+        $this->logger = $logger;
     }
 
     /**
@@ -107,6 +116,7 @@ class SalesIntegration extends Command
     {
         if (!$this->system->isEnabled()) {
             $message = __('Disabled module. Please enable module in admin store settings painel.');
+            $this->logger->critical($message);
             $output->writeln('<error>' . $message . '<error>');
             return;
         }
@@ -116,6 +126,7 @@ class SalesIntegration extends Command
             $order = $this->_order->loadByIncrementId($input->getArgument(self::ORDER_INCREMENT_ID));
         } catch (\Exception $e) {
             $message = __('Error in get order: %1',$e);
+            $this->logger->critical($message);
             $output->writeln('<error>' . $message . '<error>');
             return;
         }
@@ -124,6 +135,7 @@ class SalesIntegration extends Command
             $orderApi = json_encode($orderApi);
         } catch (\Exception $e) {
             $message = __('Error in convert order: %1',$e);
+            $this->logger->critical($message);
             $output->writeln('<error>' . $message . '<error>');
             return;
         }
@@ -132,14 +144,17 @@ class SalesIntegration extends Command
             $apiService->setData($orderApi);
             if ($apiService->execute()  === false) {
                 $message = __('Error in send order');
+                $this->logger->critical($message);
                 $output->writeln('<error>' . $message . '<error>');
                 return;
             }
         } catch (\Exception $e) {
             $message = __('Error in send order: %1',$e);
+            $this->logger->critical($message);
             $output->writeln('<error>' . $message . '<error>');
             return;
         }
+        $this->logger->critical($message);
         $message = __('Success');
         $output->writeln('<info>' . $message . '<info>');
     }
